@@ -6,7 +6,7 @@ This project implements a simple ticket service that allows a user to find, hold
 
 1. Venue is rectangular and is defined by giving the number of rows and columns.
 2. `0 < rows <= 1000` and `0 < columns <= 1000`
-3. Seat holds expire after 90 seconds.
+3. Seat holds expire after 5 seconds (for the purpose of a shorter demo).
 4. "Best" seats are closest to the front of the venue.
 5. If a seat hold request needs more seats than the venue currently has available, no seats will be held.
 
@@ -20,9 +20,9 @@ The venue is filled with a "first fit" algorithm, starting in at `(0, 0)` and mo
 
 A `seatHolds` map inside the `Venue` object maintains the current list of active reservation holds. The map holds the `seatHoldId` as the key and the `SeatHold` object itself as the value to allow for easy retrieval when the `reserveSeats` method is called to finalize the reservation and change the `SeatStatus` of each of the seats in the `SeatHold` from `HOLD` to `RESERVED`. The `SeatHold` is then removed from the active seat hold list after a successful reservation confirmation.
 
-## Build and Package
+## Build
 ```bash
-$ mvn clean install
+$ mvn compile
 ```
 
 ## Test
@@ -31,7 +31,18 @@ mvn test
 ```
 
 ## Execution
-To run the main class for demo purposes and interaction, run the following:
+To run the main class for demo and interactive purposes, run the following:
 ```bash
 $ mvn exec:java
 ```
+
+## Package
+The following command will create a .jar file in the target/ folder:
+```bash
+mvn clean install
+```
+
+## Future Work/Improvements
+
+1. Need to work on isolation in unit tests with added mocking of outside method calls.
+2. Seat people starting from the center of a row and work outwards.
