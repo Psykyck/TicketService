@@ -140,19 +140,14 @@ public class PerformanceVenueTicketService implements TicketService {
     }
 
     /**
-    * Reserves a list of seats.
+    * Handles the expiration of a SeatHold.
     * <p>
     * Given {@code seatHoldId}, this method will attempt to find a
     * {@code SeatHold} with given id and change the status of the
-    * list of seats from HOLD to RESERVED.
-    * <p>
-    * A successful reservation will return {@code confirmationId},
-    * whereas if the {@code seatHoldId} does not exist, then a null
-    * value will be returned.
+    * list of seats from HOLD to VACANT. The {@code SeatHold} will
+    * also be removed from the active list of seat holds.
     *
     * @param seatHoldId Id of the SeatHold containing the list of seats.
-    * @param customerEmail Customer's email address.
-    * @return Confirmation id.
     */
     public void expiryHandler(int seatHoldId) {
         if (seatHolds.containsKey(seatHoldId)) {
