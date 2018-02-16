@@ -18,7 +18,7 @@ Each `Seat` object maintains its `SeatStatus` which can be `VACANT`, `HOLD`, or 
 
 The venue is filled with a "first fit" algorithm, starting in at `(0, 0)` and moving left to right and then starting over in the first element of the next row if there is any overflow. For example, in a 2x2 venue, a request for a 3 seat hold would return the following seats: `[(0,0), (1,0), (0,1)]`.
 
-A `seatHolds` map inside the `Venue` object maintains the current list of active reservation holds. The map holds the `seatHoldId` as the key and the `SeatHold` object itself as the value to allow for easy retrieval when the `reserveSeats` method is called to finalize the reservation and change the `SeatStatus` of each of the seats in the `SeatHold` from `HOLD` to `RESERVED`. The `SeatHold` is then removed from the active seat hold list after a successful reservation confirmation.
+A `seatHolds` map inside the `Venue` object maintains the current list of active reservation holds. The map holds the `seatHoldId` as the key and the `SeatHold` object itself as the value to allow for easy retrieval when the `reserveSeats` method is called. After creating the `SeatHold` and adding it to the list, a new thread is started to wait for either a notify from the main thread that `reserveSeats` has been called, or a timeout based on the `holdExpiry` variable has occured. If the hold expires, the thread access both the seat hold list and the venue's seatmap in a thread-safe way to remove the `SeatHold` from the active list and to change the `SeatStatus` of all the `Seat` objects from `HOLD` to `VACANT`. Otherwise, if `reserveSeats` is called, then the `SeatStatus` of each of the seats in the `SeatHold` are changed from `HOLD` to `RESERVED`. The `SeatHold` is then removed from the active seat hold list after a successful reservation confirmation.
 
 ## Build
 ```bash
@@ -31,9 +31,9 @@ mvn test
 ```
 
 ## Execution
-To run the main class for demo and interactive purposes, run the following:
+To run the main class for demo and interactive purposes, run the following where `x` is the number of rows and `y` is the number of columns:
 ```bash
-$ mvn exec:java
+$ mvn exec:java -Dexec.args="x y"
 ```
 
 ## Package
