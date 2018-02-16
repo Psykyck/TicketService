@@ -24,12 +24,13 @@ public class PerformanceVenueTicketService implements TicketService {
     private Venue venue;
     private Map<Integer, SeatHold> seatHolds;
 
-    final CountDownLatch done = new CountDownLatch(1);
+    private CountDownLatch done; 
     final int holdExpiry = 5;
 
     public PerformanceVenueTicketService(Venue venue) {
         this.venue = venue; 
         seatHolds = new ConcurrentHashMap<Integer, SeatHold>();
+        done = new CountDownLatch(1);
     }
     
     /**
