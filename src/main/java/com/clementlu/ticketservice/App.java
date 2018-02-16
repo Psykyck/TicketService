@@ -12,7 +12,6 @@ public class App
     public static void main( String[] args )
     {   
         try {
-            Scanner in = new Scanner(System.in);
             Venue venue = new Venue(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
             
             System.out.println("Total Seats: " + venue.getTotalSeats());
@@ -22,7 +21,7 @@ public class App
             
             TicketService service = new PerformanceVenueTicketService(venue);
 
-            try {
+            try (Scanner in = new Scanner(System.in)) {
                 while(true) {
                     System.out.println("*********Start Request*********");
                     System.out.print("Enter seats to hold: ");
@@ -57,11 +56,10 @@ public class App
                     System.out.println("*********End Request*********");
                 }
             } catch (Exception e) {
-                System.out.println("Restarting...");
+                System.out.println("Error occured: " + e);
             }
-            
         } catch (InvalidVenueException ex) {
             System.out.println("Try again with valid venue dimensions: " + ex);
-        }  
+        }
     }
 }
