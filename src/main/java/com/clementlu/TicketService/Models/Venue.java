@@ -1,7 +1,7 @@
 package com.clementlu.ticketservice.Models;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import com.clementlu.ticketservice.Constant.SeatStatus;
 import com.clementlu.ticketservice.Exceptions.InvalidVenueException;
@@ -65,9 +65,9 @@ public class Venue {
     */
     private void initializeSeatMap(int rows, int columns) throws InvalidVenueException {
         if (rows > 0 && columns > 0) {
-            seatMap = new ArrayList<List<Seat>>();
+            seatMap = new CopyOnWriteArrayList<List<Seat>>();
             for (int y = 0; y < columns; y++) {
-                seatMap.add(new ArrayList<Seat>());
+                seatMap.add(new CopyOnWriteArrayList<Seat>());
                 for (int x = 0; x < rows; x++) {
                     seatMap.get(y).add(new Seat(x,y));
                 }
